@@ -16,7 +16,8 @@ import pandas as pd
 import numpy as np
 
 # EPA API
-base_url = 'https://smmtool.app.cloud.gov/api/'
+# base_url = 'https://smmtool.app.cloud.gov/api/'
+base_url = 'https://api.github.com/ModelEarth/OpenFootprint/tree/main/impacts/2020/GAEEIOv1.0-s-20'
 api_headers = {'x-api-key':'lySopVteG11Ru0m5ucnRharYBWco1CIGWlxKvro0'}
 
 
@@ -27,7 +28,8 @@ def USEEIO_GET_MODEL_NAME():
 
 
 def USEEIO_GET_SECTOR_NAME(model):
-    model_sector_resp = requests.get(base_url + '{0}/sectors'.format(model), headers=api_headers)
+    # model_sector_resp = requests.get(base_url + '{0}/sectors'.format(model), headers=api_headers) # <-- response with 404
+    model_sector_resp = requests.get(base_url + '/sectors.json/', headers=api_headers) # model already included in provided base_url, need to point at sectors.json
     model_sector_json = model_sector_resp.json()
     sector_ids, sector_names = [], []
     for i in model_sector_json:
@@ -167,7 +169,10 @@ def BUILD_JSON_FOR_IO_SANKEY(input_mat,  output_mat, topn = 10):
 
     js = {'nodes':node_list, 'links':link_list}
 
-    with open('data/IO.js', 'w') as f:
+    # with open('data/IO.js', 'w') as f:
+    #     f.write('var iojson = ')
+    #     json.dump(js, f, indent=4)
+    with open('data/IO-ev-2018.js', 'w') as f:
         f.write('var iojson = ')
         json.dump(js, f, indent=4)
 
